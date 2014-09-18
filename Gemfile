@@ -11,6 +11,7 @@ gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'devise'
 gem 'twitter', '~> 5.11.0'
+gem 'rest_client'
 
 group :development do
   gem 'better_errors'
