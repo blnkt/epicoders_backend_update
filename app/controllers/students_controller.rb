@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :except => :create
 
   respond_to :html, :json
   def index
