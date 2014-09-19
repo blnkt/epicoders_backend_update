@@ -1,4 +1,6 @@
 class StudentsController < ApplicationController
+  before_action :authenticate_user!
+
   respond_to :html, :json
   def index
     @students = Student.order(:name)
