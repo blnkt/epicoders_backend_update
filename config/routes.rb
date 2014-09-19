@@ -2,5 +2,5 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "home#index"
 
-  resources :students, :only => [:index, :create]
+  resources :students, :only => [:index, :create, :destroy]
 end

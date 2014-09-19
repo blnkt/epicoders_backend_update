@@ -1,6 +1,7 @@
 class StudentsController < ApplicationController
   respond_to :html, :json
   def index
+    @students = Student.order(:name)
     @student = Student.new
   end
 
@@ -12,6 +13,17 @@ class StudentsController < ApplicationController
       end
     else
       respond_with({error: "Incomplete"})
+    end
+  end
+
+  def destroy
+    @student = Student.find(params[:id])
+    if @student.destroy
+      flash[:notice] = "#{@student.name} has been deleted"
+      redirect_to :back
+    else
+      flash[:alert] = "Unable to delete #{@student.name}"
+      redirect_to :back
     end
   end
 
