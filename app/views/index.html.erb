@@ -1,18 +1,1 @@
 <h1>Welcome</h1>
-
-<%= form_for @student, :remote => true, :html => {:'data-type' => 'json', :multipart => true} do |f| %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.label :season %>
-  <%= f.text_field :season%>
-  <%= f.label :year %>
-  <%= f.number_field :year %>
-  <%= f.label :github_username %>
-  <%= f.text_field :github_username %>
-<% end %>
-
-<hr>
-<h2>All Students</h2>
-<% @students.each do |student| %>
-  <p><%= student.name %><%= link_to "Delete", student_path(student), method: :delete %></p>
-<% end %>
