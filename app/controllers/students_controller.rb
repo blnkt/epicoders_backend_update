@@ -11,6 +11,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  def new
+    @student = Student.new
+  end
+
   def create
     @student = Student.new(student_params)
     if @student.save
@@ -39,6 +43,6 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:name, :season, :year, :github_username)
+    params.require(:student).permit(:name, :season, :year, :github_username, :linked_in_url)
   end
 end

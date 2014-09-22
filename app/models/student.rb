@@ -2,11 +2,13 @@ class Student < ActiveRecord::Base
   before_save :bouncer
   before_save :parse_github
   before_save :scrape_github
+  before_save :scrape_linked_in
 
   validates_presence_of :name
   validates_presence_of :season
   validates_presence_of :year
   validates_presence_of :github_username
+  validates_presence_of :linked_in_url
 
 private
   def bouncer
@@ -77,10 +79,9 @@ private
     data = JSON.parse(RestClient.get "https://api.github.com/users/#{self.github_username}")
     self.email = data["email"]
     self.avatar = data["avatar_url"]
-    self.current_location = data["location"]
     self.hireable = data["hireable"]
-    self.bio = data["bio"]
     self.html_url = data["blog"]
+    self.current_location = data["location"]
   end
 
   def scrape_github
@@ -90,5 +91,16 @@ private
     num = data.index(/<a href/)
     data = data.slice(num, 100)
     self.project = "https://www.github.com" + data.scan(/"([^"]*)"/).first.join
+  end
+
+  def scrape_linked_in
+    data = RestClient.get "#{self.linked_in_url}"
+    num = data.index(/<p class=" description/)
+    data = data.slice(num, 1000)
+    to_delete = data.scan(/<[^<]*>/).first
+    data = data.gsub(to_delete, "")
+    data = data.scan(/\n(.*)\n<\/p>/m).first.join
+    data = data.gsub("<br>", "")
+    self.bio = data.gsub("&#39;", "'")
   end
 end
