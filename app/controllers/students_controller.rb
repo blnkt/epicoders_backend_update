@@ -1,17 +1,21 @@
 class StudentsController < ApplicationController
-  before_action :authenticate_user!, :except => :create
+  # before_action :authenticate_user!, :only => :create
+  skip_before_filter :verify_authenticity_token
 
   respond_to :html, :json
   def index
     @students = Student.order(:name)
     @student = Student.new
+    respond_to do |format|
+      format.html { render :json => @students }
+    end
   end
 
   def create
     @student = Student.new(student_params)
     if @student.save
       respond_to do |format|
-        format.json { render :json => @student }
+        format.json { redirect_to students_path }
       end
     else
       respond_with({error: "Incomplete"})

@@ -12,6 +12,8 @@ gem 'autoprefixer-rails'
 gem 'devise'
 gem 'twitter', '~> 5.11.0'
 gem 'rest_client'
+gem 'rack-cors', :require => 'rack/cors'
+gem 'active_model_serializers'
 
 group :development do
   gem 'better_errors'
