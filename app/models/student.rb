@@ -95,12 +95,19 @@ private
 
   def scrape_linked_in
     data = RestClient.get "#{self.linked_in_url}"
-    num = data.index(/<p class=" description/)
-    data = data.slice(num, 1000)
-    to_delete = data.scan(/<[^<]*>/).first
-    data = data.gsub(to_delete, "")
-    data = data.scan(/\n(.*)\n<\/p>/m).first.join
-    data = data.gsub("<br>", "")
-    self.bio = data.gsub("&#39;", "'")
+    begin
+      if data
+        num = data.index(/<p class=" description/)
+        data = data.slice(num, 1000)
+        to_delete = data.scan(/<[^<]*>/).first
+        data = data.gsub(to_delete, "")
+        data = data.scan(/\n(.*)\n<\/p>/m).first.join
+        data = data.gsub("<br>", "")
+        data = data.gsub("&amp;", "&")
+        self.bio = data.gsub("&#39;", "'")
+      end
+    rescue
+      self.bio = "Scraping FIALED"
+    end
   end
 end
